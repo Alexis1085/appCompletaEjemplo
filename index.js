@@ -7,6 +7,16 @@ const path = require('path'); //* Enrutador para encontrar archivos
 const nodemailer = require('nodemailer'); //* Para enviar mails
 require('dotenv').config(); //? Variables de Entorno. La librería dotenv no es necesaria traerla a una variable, sólo aplicamos la configuración --> "Loads .env file contents into process.env"
 
+/* Formato de las variables de entorno:
+SERVER_PORT=
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+
+*/
+
 const port = process.env.SERVER_PORT || 9000;
 console.log(`Puerto del servidor: ${port}`);
 
@@ -38,7 +48,25 @@ conexion.connect(err => {
 
 //* Rutas de la aplicación
 app.get('/',(req,res) => {
-    res.send('Bienvenido a la App Completa');
+    res.render('home');
+});
+
+app.get('/formulario', (req,res) => {
+    res.render('formulario', {
+        titulo: 'Formulario'
+    });
+});
+
+app.get('/productos', (req,res) => {
+    res.render('productos', {
+        titulo: 'Productos'
+    });
+});
+
+app.get('/contacto', (req,res) => {
+    res.render('contacto', {
+        titulo: 'Contacto'
+    });
 });
 
 
