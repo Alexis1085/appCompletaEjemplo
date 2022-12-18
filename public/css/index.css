@@ -1,20 +1,16 @@
 
 main {
     background-color: rgb(212, 245, 234);
-};
-
-.title {
-    color: red;
 }
 
 .titulo-formulario {
     color: blue;
-};
+}
 
 .titulo-productos {
     color: green;
-};
+}
 
 .titulo-contacto {
     color: red;
-};
+}

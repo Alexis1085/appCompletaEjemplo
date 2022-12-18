@@ -14,7 +14,8 @@ DB_PORT=
 DB_USER=
 DB_PASSWORD=
 DB_NAME=
-
+EMAIL=
+EMAIL_PASS=
 */
 
 const port = process.env.SERVER_PORT || 9000;
@@ -47,6 +48,7 @@ conexion.connect(err => {
 
 
 //* Rutas de la aplicación
+//* GETs:
 app.get('/',(req,res) => {
     res.render('home');
 });
@@ -70,6 +72,77 @@ app.get('/contacto', (req,res) => {
 });
 
 
+//* POSTs:
+app.post('/formulario', (req,res) => {
+    console.log(req.body);
+
+    let nombre = req.body.nombre;
+    let precio = req.body.precio;
+    let descripcion = req.body.descripcion;
+
+ /* conexion.query(`insert into productos values(null,"${nombre}",${precio},"${descripcion}"`, err => {
+        if (err) throw err;
+            console.log();
+    }); */
+
+
+    //TODO A este objeto no le veo el sentido práctico
+    let datosProducto = {
+        nombreProducto: nombre,
+        precioProducto: precio,
+        descripcionProducto: descripcion
+    }
+
+    conexion.query("INSERT INTO productos SET ?", datosProducto, err => {
+        if (err) throw err;
+            console.log(`1 Producto agregado a la base de datos: ${nombre} - ${precio} - ${descripcion}`);
+            res.render('formulario', {
+                titulo: 'Formulario'
+            });
+    });
+});
+
+app.post('/contacto', (req,res) => {
+    let nombreContacto = req.body.nombre;
+    let emailContacto = req.body.email;
+
+    //? Función para enviar e-mail con nodemailer
+    async function envioMail(){
+        //* Configuración de la cuenta remitente:
+        let transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASS
+            },
+            //tls: {rejectUnauthorized: true}
+        });
+        //* Configuración del Envío:
+        let info = await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: `${emailContacto}`,
+            subject: 'Gracias por suscribirte',
+            html: `<body><h3 style="color: violet">Bienvenido a la App de la UTN ${nombreContacto}</h3><p>Gracias por suscribirte, próximamente te estaremos contactando con las novedades</p></body>`
+        });
+    };
+
+    let datosContacto = {
+        nombreContacto: nombreContacto,
+        emailContacto: emailContacto
+    };
+
+    conexion.query("INSERT INTO contactos SET ?", datosContacto, (err) => {
+        if (err) throw err;
+        console.log(`1 Contacto agregado a la base de datos: ${nombreContacto} - ${emailContacto}`);
+        res.render('contacto', {
+            titulo: 'Contacto'
+        });
+        //* Envío el mail si no hubo error al guardar los datos
+        envioMail().catch(console.error);
+    });
+});
 
 //* Servidor a la escucha de las peticiones
 app.listen(port, () => {

@@ -1,7 +1,23 @@
 
-<div class="container text-center m-5">
+<div class="container text-center mb-3">
     <hr>
-    <h1 class="titulo-contacto">¡¡Hola!! Esta es la página de {{titulo}}</h1>
+    <h2 class="titulo-contacto">¡¡Hola!! Esta es la página de {{titulo}}</h2>
     <hr>
-    <h3>Aquí podrás llenar tus datos de contacto para que podamos comunicarnos contigo</h3>
+    <h4>Aquí podrás llenar tus datos de contacto para que podamos comunicarnos contigo</h4>
+</div>
+
+<div class="container w-75 bg-light pt-3 pb-3">
+    <form action="/contacto" method="post">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Escriba su nombre" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">e-mail</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Escriba su e-mail de contacto" required>
+        </div>
+        <div class="d-grid gap-2">
+            <button class="btn btn-outline-danger btn-lg" type="submit">Enviar</button>
+        </div>
+    </form>
 </div>
