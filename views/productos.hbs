@@ -5,3 +5,103 @@
     <hr>
     <h4>Aquí verás la información de los productos existentes</h4>
 </div>
+
+{{! Carrusel de imágenes desde Bootstrap}}
+{{! Pendientes de personalizar:
+    - Tamaño de imágenes: ver si se puede crear un marco para darle un tamaño fijo a las imágenes
+    - Borde de texto: agregarle un borde al texto sobre las imágenes para hacerlo más legible}}
+<div class="container">
+    <div id="carruselProductos" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            <button type="button" data-bs-target="#carruselProductos" data-bs-slide-to="5" aria-label="Slide 6"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="5000">
+                <img src="/img/gondolas.jpg" class="d-block w-100" alt="Góndolas del Supermercado">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Supermercado</h5>
+                    <p>Amplias superficies en exposición</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/img/verduras.jpg" class="d-block w-100" alt="Productos frescos">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Productos Frescos</h5>
+                    <p>Productos frescos y de estación</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/img/lacteos.jpg" class="d-block w-100" alt="Lácteos">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Variedad de Lácteos</h5>
+                    <p>Góndolas frías para mantener los productos frescos</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/img/preciosJustos.jpg" class="d-block w-100" alt="Precios Justos">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Precios Justos</h5>
+                    <p>Adherimos al programa con la totalidad de los productos</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/img/cajas.jpg" class="d-block w-100" alt="Cajas">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Muchas Cajas</h5>
+                    <p>Contamos con gran cantidad de cajas para mejorar tu experiencia</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/img/covid.jpg" class="d-block w-100" alt="Protocolo CoViD">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Protocolo CoViD</h5>
+                    <p>Seguimos el protocolo para evitar la transmisión del CoViD-19</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carruselProductos" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carruselProductos" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<div class="container text-center mb-1">
+    <hr>
+    <h3 class="titulo-productos">Listado de Productos</h3>
+    <hr>
+</div>
+
+{{! Tabla de Productos registrados en la Base de Datos}}
+
+<div class="container mb-3">
+    <table class="table table-sm table-success table-striped table-hover">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#id</th>
+                <th scope="col">Producto</th>
+                <th scope="col" class="text-center">Precio Unitario</th>
+                <th scope="col">Descripción</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {{#each datosProductos}}
+            <tr>
+                <th scope="row">{{ idProducto }}</th>
+                <td>{{ nombreProducto }}</td>
+                <td class="text-center">$ {{ precioProducto }}</td>
+                <td>{{ descripcionProducto }}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

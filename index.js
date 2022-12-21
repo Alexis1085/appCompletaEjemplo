@@ -60,8 +60,13 @@ app.get('/formulario', (req,res) => {
 });
 
 app.get('/productos', (req,res) => {
-    res.render('productos', {
-        titulo: 'Productos'
+    conexion.query("SELECT * FROM productos", (err,result) => {
+        if (err) throw err;
+        //console.log(result);
+        res.render('productos', {
+            titulo: 'Productos',
+            datosProductos: result
+        });
     });
 });
 
@@ -80,7 +85,7 @@ app.post('/formulario', (req,res) => {
     let precio = req.body.precio;
     let descripcion = req.body.descripcion;
 
- /* conexion.query(`insert into productos values(null,"${nombre}",${precio},"${descripcion}"`, err => {
+    /* conexion.query(`insert into productos values(null,"${nombre}",${precio},"${descripcion}"`, err => {
         if (err) throw err;
             console.log();
     }); */
