@@ -90,7 +90,6 @@ app.post('/formulario', (req,res) => {
             console.log();
     }); */
 
-
     //TODO A este objeto no le veo el sentido práctico
     let datosProducto = {
         nombreProducto: nombre,
@@ -105,6 +104,46 @@ app.post('/formulario', (req,res) => {
                 titulo: 'Formulario'
             });
     });
+});
+
+
+app.post('/delete', (req,res) => {
+    let idProducto = req.body.idProducto;
+    console.log(idProducto);
+    conexion.query(`DELETE FROM productos WHERE idProducto = ${idProducto};`, (err) => {
+        if (err) throw err;
+        console.log(`Producto N° ${idProducto} eliminado`);
+        conexion.query("SELECT * FROM productos;", (err,result) => {
+            if (err) throw err;
+            res.render('productos', {
+                titulo: 'Productos',
+                datosProductos: result
+            });
+        });
+    });
+});
+
+
+app.post('/update', (req,res) => {
+    console.log(req.body);
+    let modificar = {
+        nombreProducto: req.body.nombre,
+        precioProducto: req.body.precio,
+        descripcionProducto: req.body.descripcion
+    };
+    let idProducto = req.body.idProducto;
+    conexion.query(`UPDATE productos SET ? WHERE idProducto = ${idProducto};`, modificar, (err) => {
+        if (err) throw err;
+        console.log(`Producto N° ${idProducto} actualizado`);
+        conexion.query("SELECT * FROM productos;", (err,result) => {
+            if (err) throw err;
+            res.render('productos', {
+                titulo: 'Productos',
+                datosProductos: result
+            });
+        });
+    });
+    // res.send("Datos Modificados");
 });
 
 app.post('/contacto', (req,res) => {
@@ -148,6 +187,7 @@ app.post('/contacto', (req,res) => {
         envioMail().catch(console.error);
     });
 });
+
 
 //* Servidor a la escucha de las peticiones
 app.listen(port, () => {

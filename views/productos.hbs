@@ -84,24 +84,121 @@
 {{! Tabla de Productos registrados en la Base de Datos}}
 
 <div class="container mb-3">
-    <table class="table table-sm table-success table-striped table-hover">
+    <table class="table table-sm table-success table-striped table-hover" id="tablaProductos">
         <thead class="table-light">
             <tr>
                 <th scope="col">#id</th>
                 <th scope="col">Producto</th>
                 <th scope="col" class="text-center">Precio Unitario</th>
                 <th scope="col">Descripción</th>
+                <th scope="col"></th>
             </tr>
         </thead>
-        <tbody class="table-group-divider">
+        <tbody class="table-group-divider align-middle">
             {{#each datosProductos}}
             <tr>
                 <th scope="row">{{ idProducto }}</th>
                 <td>{{ nombreProducto }}</td>
                 <td class="text-center">$ {{ precioProducto }}</td>
                 <td>{{ descripcionProducto }}</td>
+                <td>
+                    <button type="button" class="btn btn-danger delete" data-bs-toggle="modal" data-bs-target="#modalDelete" data-iddelete="{{idProducto}}" data-nombredelete="{{nombreProducto}}" data-preciodelete="{{precioProducto}}" data-descripciondelete="{{descripcionProducto}}">Eliminar</button>
+                    <button type="button" class="btn btn-primary update" data-bs-toggle="modal" data-bs-target="#modalUpdate" data-id="{{idProducto}}" data-nombre="{{nombreProducto}}" data-precio="{{precioProducto}}" data-descripcion="{{descripcionProducto}}">Modificar</button>
+                </td>
             </tr>
             {{/each}}
         </tbody>
     </table>
 </div>
+
+{{! Modal para el Delete desde Bootstrap}}
+<div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/delete" method="post">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">¿Desea eliminar este registro?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fs-6 fw-semibold"><span id="nombreDelete">Nombre</span> - $  <span id="precioDelete">Precio</span> - <span id="descripcionDelete">Descripción</span></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="idProducto" id="idProductoDelete">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Descartar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{! Modal para el Update desde Bootstrap}}
+<div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/update" method="post">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Producto</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre" class="col-form-label">Nombre del Producto:</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio" class="col-form-label">Precio unitario:</label>
+                        <input type="number" class="form-control" name="precio" id="precio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="col-form-label">Descripción del Producto:</label>
+                        <textarea class="form-control" name="descripcion" id="descripcion" rows="2" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="idProducto" id="idProducto">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Descartar</button>
+                    <button type="submit" class="btn btn-success">Modificar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+<script>
+    // JQuery para el uso del Modal y para pasar la información al Modal y por este al backend:
+    $(document).ready(function() {
+        $('#tablaProductos').on('click', '.delete', function() {
+            //Creación de variables para pasarle la información al Modal
+            let idModalDelete = $(this).data('iddelete');
+            let nombreModalDelete = $(this).data('nombredelete');
+            let precioModalDelete = $(this).data('preciodelete');
+            let descripcionModalDelete = $(this).data('descripciondelete');
+            $('#idProductoDelete').val(idModalDelete);
+            $('#nombreDelete').html(nombreModalDelete);
+            $('#precioDelete').html(precioModalDelete);
+            $('#descripcionDelete').html(descripcionModalDelete);
+            /* Comando para mostrar el Modal si no tuviera Bootstrap
+            $(modalDelete).modal('show') */
+        })
+
+        //Modal del Update
+        $('#tablaProductos').on('click', '.update', function() {
+            //Creación de variables para pasarle la información al Modal
+            let idModal = $(this).data('id');
+            let nombreModal = $(this).data('nombre');
+            let precioModal = $(this).data('precio');
+            let descripcionModal = $(this).data('descripcion');
+            $('#idProducto').val(idModal);
+            $('#nombre').val(nombreModal);
+            $('#precio').val(precioModal);
+            $('#descripcion').val(descripcionModal);
+            /* Comando para mostrar el Modal si no tuviera Bootstrap
+            $(modalUpdate).modal('show') */
+        })
+    })
+</script>
